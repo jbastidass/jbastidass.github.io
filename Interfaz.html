@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Document</title>
+
+    <style>
+        .btn.btn-danger.btn-lg {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease-out;
+        }
+        .container {
+            position: relative;
+            text-align: center;
+            padding-top: 300px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Valentina, ¿Arreglamos nuestras diferencias?</h1>
+        <br>
+
+        <a href="Opción.html" style="margin: 10px;" class="btn btn-success btn-lg" role="button">Sí</a>
+        <a id="btnNo" class="btn btn-danger btn-lg" role="button" onmouseover="moverBoton(event)">No</a>
+        
+    </div>
+
+    <script>
+        function moverBoton(event) {
+            const btnNo = document.getElementById('btnNo');
+            const h1Text = document.querySelector('h1');
+            
+            // Limitar el rango de las posiciones aleatorias
+            const minX = -h1Text.offsetWidth / 2 + btnNo.offsetWidth / 2;
+            const maxX = h1Text.offsetWidth / 2 - btnNo.offsetWidth / 2;
+            const minY = -h1Text.offsetHeight / 2 + btnNo.offsetHeight / 2;
+            const maxY = h1Text.offsetHeight / 2 - btnNo.offsetHeight / 2;
+            
+            // Obtener posiciones aleatorias dentro del rango
+            let posX = Math.random() * (maxX - minX) + minX;
+            let posY = Math.random() * (maxY - minY) + minY;
+
+            // Verificar la distancia entre el cursor y el botón
+            const rect = btnNo.getBoundingClientRect();
+            const cursorX = event.clientX;
+            const cursorY = event.clientY;
+
+            const distance = Math.sqrt(
+                Math.pow(cursorX - (rect.left + rect.width / 2), 2) +
+                Math.pow(cursorY - (rect.top + rect.height / 2), 2)
+            );
+
+            // Ajustar la posición si la distancia es menor a un umbral
+            const threshold = 50; // Ajusta según sea necesario
+            if (distance < threshold) {
+                posX += (cursorX < rect.left + rect.width / 2) ? -threshold : threshold;
+                posY += (cursorY < rect.top + rect.height / 2) ? -threshold : threshold;
+            }
+            
+            // Aplicar la nueva posición en relación con el texto
+            btnNo.style.transform = `translate(${posX}px, ${posY}px)`;
+        }
+    </script>
+</body>
+</html>
